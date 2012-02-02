@@ -1,0 +1,74 @@
+<project name="custom-httplogimagesdriver" default="help" basedir=".">
+
+<property name="build.sysclasspath" value="last"/>
+
+<target name="help">
+    <echo message="Common build targets:" />
+    <echo message="jar         - Builds custom-httplogimagesdriver.jar" />
+    <echo message="build       - Same as clean+jar" />
+    <echo message="compile     - Compiles custom-httplogimagesdriver classes" />
+    <echo message="clean       - Remove all *.class and custom-httplogimagesdriver.jar" />
+    <echo message="run-example - Runs custom-httplogimagesdriver against an example file" />
+</target>
+
+<property file="build.properties"/>
+<property name="buildDir" value="build" />
+
+<path id="classpath">
+    <pathelement path="." />
+    <fileset dir="/usr/lib/hadoop-0.20">
+	<include name="*.jar" />
+    </fileset>
+    <pathelement location="." />
+</path>
+
+<target name="build" depends="clean,jar"/>
+
+<target name="run-example" depends="jar">
+  <exec executable="../example-data/generate-http-log.pl">
+  </exec>
+  <exec executable="hadoop">
+    <arg value="fs"/>
+    <arg value="-put"/>
+    <arg value="../example-data/http.log"/>
+    <arg value="http.log"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="fs"/>
+    <arg value="-rmr"/>
+    <arg value="custom-httplogimagesdriver-example"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="jar"/>
+    <arg value="custom-httplogimagesdriver.jar"/>
+    <arg value="com/timmattison/hadoop/examples/counters/httplogimages/HttpLogImagesDriver"/>
+    <arg value="http.log"/>
+    <arg value="custom-httplogimagesdriver-example"/>
+  </exec>
+</target>
+
+<target name="jar" depends="compile">
+    <jar
+        jarfile="custom-httplogimagesdriver.jar">
+        <fileset dir="classes"/>
+    </jar>
+</target>
+
+<target name="compile">
+    <mkdir dir="classes"/>
+    <javac
+        srcdir="src"
+        destdir="classes"
+        classpathref="classpath"/>
+    <copy todir="classes">
+        <fileset dir="src">
+            <include name="**/*.properties" />
+        </fileset>
+    </copy>    
+</target>
+
+<target name="clean">
+    <delete dir="classes"/>
+</target>
+
+</project>
