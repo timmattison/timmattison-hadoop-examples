@@ -1,0 +1,4 @@
+Current examples:
+  - basic-wordcount - Counts the occurrences of individual words in a set of regular text files
+  - basic-invertedindex - Creates an inverted index (word, file location) for a set of files in which each line starts with the line number, is followed by a tab character, and then contains a line of text
+  - basic-wordcooccurrence - Counts the occurrences of pairs of words in a set of regular text files
