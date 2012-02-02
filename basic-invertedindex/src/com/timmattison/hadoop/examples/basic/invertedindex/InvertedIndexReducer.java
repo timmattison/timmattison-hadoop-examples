@@ -33,7 +33,7 @@ public class InvertedIndexReducer extends MapReduceBase implements
 
 		// Are there more values?
 		while (values.hasNext()) {
-			// Append a separator
+			// Yes, append a separator
 			stringBuilder.append(separator);
 
 			// Append the next value
