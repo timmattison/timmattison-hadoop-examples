@@ -25,15 +25,8 @@ public class WordCooccurrenceMapper extends MapReduceBase implements
 		// Create an ArrayList for the list of words
 		List<String> words = new ArrayList<String>();
 
-		boolean first = true;
-
 		// Split the string on non-word characters (ie. spaces, commas, etc)
 		for (String word : line.split("\\W+")) {
-			if (first) {
-				System.out.println("first: " + word);
-				first = false;
-			}
-
 			// Is the word longer than zero characters?
 			if (word.length() > 0) {
 				// Yes, convert it to lowercase and add it to the list
