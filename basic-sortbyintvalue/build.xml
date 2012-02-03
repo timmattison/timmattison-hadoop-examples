@@ -28,25 +28,45 @@
   <exec executable="ant" dir="../basic-wordcooccurrence">
     <arg value="run-example"/>
   </exec>
+  <exec executable="ant" dir="../basic-httplogipcount">
+    <arg value="run-example"/>
+  </exec>
   <exec executable="hadoop">
     <arg value="fs"/>
     <arg value="-rmr"/>
-    <arg value="basic-sortbyintvalue-example"/>
-    <arg value="basic-sortbyintvalue-reverse-example"/>
+    <arg value="basic-sortbyintvalue-wordco-example"/>
+    <arg value="basic-sortbyintvalue-wordco-reverse-example"/>
+    <arg value="basic-sortbyintvalue-httplogip-example"/>
+    <arg value="basic-sortbyintvalue-httplogip-reverse-example"/>
   </exec>
   <exec executable="hadoop">
     <arg value="jar"/>
     <arg value="basic-sortbyintvalue.jar"/>
     <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
     <arg value="basic-wordcooccurrence-example"/>
-    <arg value="basic-sortbyintvalue-example"/>
+    <arg value="basic-sortbyintvalue-wordco-example"/>
   </exec>
   <exec executable="hadoop">
     <arg value="jar"/>
     <arg value="basic-sortbyintvalue.jar"/>
     <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
     <arg value="basic-wordcooccurrence-example"/>
-    <arg value="basic-sortbyintvalue-reverse-example"/>
+    <arg value="basic-sortbyintvalue-wordco-reverse-example"/>
+    <arg value="1"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="jar"/>
+    <arg value="basic-sortbyintvalue.jar"/>
+    <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
+    <arg value="basic-httplogipcount-example"/>
+    <arg value="basic-sortbyintvalue-httplogip-example"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="jar"/>
+    <arg value="basic-sortbyintvalue.jar"/>
+    <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
+    <arg value="basic-httplogipcount-example"/>
+    <arg value="basic-sortbyintvalue-httplogip-reverse-example"/>
     <arg value="1"/>
   </exec>
 </target>
