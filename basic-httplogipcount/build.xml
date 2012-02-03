@@ -1,0 +1,79 @@
+<project name="basic-httplogipcount" default="help" basedir=".">
+
+<property name="build.sysclasspath" value="last"/>
+
+<target name="help">
+    <echo message="Common build targets:" />
+    <echo message="jar         - Builds basic-httplogipcount.jar" />
+    <echo message="build       - Same as clean+jar" />
+    <echo message="compile     - Compiles basic-httplogipcount classes" />
+    <echo message="clean       - Remove all *.class and basic-httplogipcount.jar" />
+    <echo message="run-example - Runs basic-httplogipcount against an example file" />
+</target>
+
+<property file="build.properties"/>
+<property name="buildDir" value="build" />
+
+<path id="classpath">
+    <pathelement path="." />
+    <fileset dir="/usr/lib/hadoop-0.20">
+	<include name="*.jar" />
+    </fileset>
+    <pathelement location="." />
+</path>
+
+<target name="build" depends="clean,jar"/>
+
+<target name="run-example" depends="jar">
+  <exec executable="../example-data/generate-http-log.pl">
+  </exec>
+  <exec executable="hadoop">
+    <arg value="fs"/>
+    <arg value="-rm"/>
+    <arg value="http.log"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="fs"/>
+    <arg value="-put"/>
+    <arg value="../example-data/http.log"/>
+    <arg value="http.log"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="fs"/>
+    <arg value="-rmr"/>
+    <arg value="basic-httplogipcount-example"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="jar"/>
+    <arg value="basic-httplogipcount.jar"/>
+    <arg value="com/timmattison/hadoop/examples/basic/httplogipcount/HttpLogIpCountDriver"/>
+    <arg value="http.log"/>
+    <arg value="basic-httplogipcount-example"/>
+  </exec>
+</target>
+
+<target name="jar" depends="compile">
+    <jar
+        jarfile="basic-httplogipcount.jar">
+        <fileset dir="classes"/>
+    </jar>
+</target>
+
+<target name="compile">
+    <mkdir dir="classes"/>
+    <javac
+        srcdir="src"
+        destdir="classes"
+        classpathref="classpath"/>
+    <copy todir="classes">
+        <fileset dir="src">
+            <include name="**/*.properties" />
+        </fileset>
+    </copy>    
+</target>
+
+<target name="clean">
+    <delete dir="classes"/>
+</target>
+
+</project>
