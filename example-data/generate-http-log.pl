@@ -19,7 +19,7 @@ my $iterations = 10000000;
 open OUTPUT_FILE, ">$output_filename";
 
 for(my $loop = 0; $loop < $iterations; $loop++) {
-  my $ip = (int(rand(254)) + 1) . "." . (int(rand(254)) + 1) . "." . (int(rand(254)) + 1) . "." . (int(rand(254)) + 1);
+  my $ip = generate_random_ip();
 
   my $random_file = int(rand(4));
 
@@ -41,3 +41,12 @@ for(my $loop = 0; $loop < $iterations; $loop++) {
 }
 
 close OUTPUT_FILE;
+
+sub generate_random_ip {
+  # Generate a random IP that isn't so random that our counting Hadoop job gives us
+  #   nothing but "1" values for every IP.  We'll simulate just a set of private
+  #   IP addresses in the 10.0.x.y range.
+  my $ip = (int(rand(10)) + 1) . ".0." . (int(rand(254)) + 1) . "." . (int(rand(254)) + 1);
+
+  return $ip;
+}
