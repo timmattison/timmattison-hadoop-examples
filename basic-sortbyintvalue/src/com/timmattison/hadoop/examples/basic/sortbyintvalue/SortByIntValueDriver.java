@@ -19,16 +19,19 @@ import org.apache.hadoop.util.ToolRunner;
  */
 public class SortByIntValueDriver extends Configured implements Tool {
 
+	public static final String REVERSE_OPTION = "REVERSE";
+	public static final boolean REVERSE_OPTION_DEFAULT = false;
+
 	@Override
 	public int run(String[] args) throws Exception {
 		// Do we have two arguments?
-		if (args.length != 2) {
+		if (args.length < 2) {
 			// No, we need at least an input and output directory
 
 			// Show the usage information
-			System.out.printf(
-					"Usage: %s [generic options] <input dir> <output dir>\n",
-					getClass().getSimpleName());
+			System.out
+					.printf("Usage: %s [generic options] <input dir> <output dir> [reverse]\n - set reverse to \"1\" to sort in reverse order",
+							getClass().getSimpleName());
 
 			// Show ToolRunner's generic command usage information on System.out
 			ToolRunner.printGenericCommandUsage(System.out);
@@ -44,6 +47,21 @@ public class SortByIntValueDriver extends Configured implements Tool {
 
 		// Create a basic JobConf object using this class as our driver
 		JobConf conf = new JobConf(getConf(), SortByIntValueDriver.class);
+
+		// Set the reverse option to the default value
+		conf.setBoolean(REVERSE_OPTION, REVERSE_OPTION_DEFAULT);
+
+		// Did they specify the reverse order argument?
+		if (args.length == 3) {
+			// Yes, was it a one?
+			if (args[2].equals("1")) {
+				// Yes, it was a one. They want reverse order.
+				conf.setBoolean(REVERSE_OPTION, true);
+			} else {
+				// No, set it to false
+				conf.setBoolean(REVERSE_OPTION, false);
+			}
+		}
 
 		// Set the job's name to the name of this driver class
 		conf.setJobName(this.getClass().getName());

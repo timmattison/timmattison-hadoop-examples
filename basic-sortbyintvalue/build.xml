@@ -32,6 +32,7 @@
     <arg value="fs"/>
     <arg value="-rmr"/>
     <arg value="basic-sortbyintvalue-example"/>
+    <arg value="basic-sortbyintvalue-reverse-example"/>
   </exec>
   <exec executable="hadoop">
     <arg value="jar"/>
@@ -39,6 +40,14 @@
     <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
     <arg value="basic-wordcooccurrence-example"/>
     <arg value="basic-sortbyintvalue-example"/>
+  </exec>
+  <exec executable="hadoop">
+    <arg value="jar"/>
+    <arg value="basic-sortbyintvalue.jar"/>
+    <arg value="com/timmattison/hadoop/examples/basic/sortbyintvalue/SortByIntValueDriver"/>
+    <arg value="basic-wordcooccurrence-example"/>
+    <arg value="basic-sortbyintvalue-reverse-example"/>
+    <arg value="1"/>
   </exec>
 </target>
 
