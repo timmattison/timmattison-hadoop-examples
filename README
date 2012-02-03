@@ -2,4 +2,7 @@ Current examples:
   - basic-wordcount - Counts the occurrences of individual words in a set of regular text files
   - basic-invertedindex - Creates an inverted index (word, file location) for a set of files in which each line starts with the line number, is followed by a tab character, and then contains a line of text
   - basic-wordcooccurrence - Counts the occurrences of pairs of words in a set of regular text files
-  - counters-httplogimages - Uses counters in a map-only process to count JPG, PNG, and GIF images in a log file
+  - counters-httplogimages - Uses counters in a map-only process to count JPG, PNG, and GIF images in an Apache-style log file
+  - basic-httplogipcount - Counts the number of times an IP is seen in an Apache-style log file
+  - basic-sortbyintvalue - Sorts Text/IntWritable data by value, returns sorted data in original Text/IntWritable format.  Supports reverse order.
+  - writables-wordcooccurrence - The same as basic-wordcooccurrence but uses a custom writable value (TextPairWritable) instead of a Text value with a comma separated string
