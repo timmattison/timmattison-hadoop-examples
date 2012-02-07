@@ -12,15 +12,16 @@ import org.apache.hadoop.fs.permission.FsPermission;
 public class TestCopyMerge {
 	private static final int innerLoopMax = 1024;
 	private static final String MAIN_PATH = "./api-copymerge-example";
+	private static final String INPUT_PATH = MAIN_PATH + "/input";
 
 	public static void main(String[] args) {
 		try {
 			Configuration configuration = new Configuration();
 			FileSystem fileSystem = FileSystem.get(configuration);
 
-			Path inputPath = new Path(MAIN_PATH + "/input");
+			Path inputPath = new Path(INPUT_PATH);
 			Path mainPath = new Path(MAIN_PATH);
-			Path outputPath = new Path(MAIN_PATH + "/output");
+			Path outputPath = new Path(MAIN_PATH);
 
 			// Delete the input and output paths recursively
 			boolean deleted = fileSystem.delete(inputPath, true);
@@ -45,10 +46,16 @@ public class TestCopyMerge {
 				fsDataOutputStream.close();
 			}
 
-			boolean deleteSource = false;
-			String addString = "\n";
+			// Delete the source directory
+			boolean deleteSource = true;
 
-			Path finalOutputPath = new Path("final.txt");
+			// Don't add any string after each file
+			String addString = null;
+
+			// Put the final output into final.txt
+			Path finalOutputPath = new Path(MAIN_PATH + "/final.txt");
+
+			// Use copy merge to combine all of the input files
 			FileUtil.copyMerge(fileSystem, inputPath, fileSystem,
 					finalOutputPath, deleteSource, configuration, addString);
 		} catch (IOException e) {
