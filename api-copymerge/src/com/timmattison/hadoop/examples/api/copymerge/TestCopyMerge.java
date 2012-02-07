@@ -9,15 +9,25 @@ import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsPermission;
 
-public class TestCopyMerge {
+import com.timmattison.hadoop.examples.api.helper.HDFSRunnable;
+import com.timmattison.hadoop.examples.api.helper.OnlyRunOnHDFS;
+
+public class TestCopyMerge extends HDFSRunnable {
 	private static final int innerLoopMax = 1024;
 	private static final String MAIN_PATH = "./api-copymerge-example";
 	private static final String INPUT_PATH = MAIN_PATH + "/input";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		// Make sure that this class only runs if we connect to HDFS
+		OnlyRunOnHDFS onlyRunOnHDFS = new OnlyRunOnHDFS();
+		onlyRunOnHDFS.run(new TestCopyMerge());
+	}
+
+	@Override
+	public void innerRun() {
 		try {
-			Configuration configuration = new Configuration();
-			FileSystem fileSystem = FileSystem.get(configuration);
+			Configuration configuration = getConfiguration();
+			FileSystem fileSystem = getFileSystem();
 
 			Path inputPath = new Path(INPUT_PATH);
 			Path mainPath = new Path(MAIN_PATH);

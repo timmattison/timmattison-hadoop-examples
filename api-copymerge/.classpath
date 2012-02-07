@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20/lib/commons-logging-api-1.0.4.jar"/>
 	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20/lib/commons-net-1.4.1.jar"/>
 	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20/lib/guava-r09-jarjar.jar"/>
+	<classpathentry kind="lib" path="/library-hdfs-helper/library-hdfs-helper.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
