@@ -34,25 +34,29 @@ public class TestCopyMerge extends HDFSRunnable {
 			Path outputPath = new Path(MAIN_PATH);
 
 			// Delete the input and output paths recursively
-			boolean deleted = fileSystem.delete(inputPath, true);
-			deleted = fileSystem.delete(outputPath, true);
+			fileSystem.delete(inputPath, true);
+			fileSystem.delete(outputPath, true);
 
-			FSDataOutputStream fsDataOutputStream;
-
-			boolean created = fileSystem.mkdirs(mainPath,
-					FsPermission.getDefault());
+			// Create the main directory
+			fileSystem.mkdirs(mainPath, FsPermission.getDefault());
 
 			// Create the input files
 			for (int loop = 0; loop < 10; loop++) {
+				// Build the temp file's name
 				String tempFile = loop + "-data.txt";
 				Path tempFilePath = new Path(inputPath + "/" + tempFile);
-				fsDataOutputStream = fileSystem.create(tempFilePath);
 
+				// Create the temp file
+				FSDataOutputStream fsDataOutputStream = fileSystem
+						.create(tempFilePath);
+
+				// Write a bunch of lines to it
 				for (int innerLoop = 0; innerLoop < innerLoopMax; innerLoop++) {
 					fsDataOutputStream.writeChars("Data point,"
 							+ (loop * innerLoopMax) + innerLoop + "\n");
 				}
 
+				// Close the temp file
 				fsDataOutputStream.close();
 			}
 
