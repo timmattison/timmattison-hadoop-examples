@@ -48,13 +48,31 @@ public class UnicodeTest {
 
 	/**
 	 * The surrogate pair of characters 4 and 5 converted into their integer
-	 * representation. This information was gathered from the "UTF-16 decoder" chart found here: http://en.wikipedia.org/wiki/UTF-16#Code_points_U.2B10000_to_U.2B10FFFF
+	 * representation. This information was gathered from the "UTF-16 decoder"
+	 * chart found here:
+	 * http://en.wikipedia.org/wiki/UTF-16#Code_points_U.2B10000_to_U.2B10FFFF
+	 */
+
+	/**
+	 * Use only the low byte of each character since the high bytes (0xD8 for
+	 * character 4, and 0xDC for character 5) are just used to indicate to the
+	 * decoder that this is a surrogate pair.
 	 */
 	private static final int CHARACTER_4_SHORT_INT_VALUE = CHARACTER_4_INT_VALUE & 0xFF;
 	private static final int CHARACTER_5_SHORT_INT_VALUE = CHARACTER_5_INT_VALUE & 0xFF;
-	
+
+	/**
+	 * Surrogate pair values start at 0x10000 and go up to 0x10FFFF
+	 */
 	private static final int SURROGATE_START = 0x10000;
-	private static final int CHARACTERS_4_AND_5_SURROGATE_INT_VALUE = SURROGATE_START + (CHARACTER_4_SHORT_INT_VALUE << 10) + CHARACTER_5_SHORT_INT_VALUE;
+
+	/**
+	 * The surrogate pair value calculated by starting at the surrogate start
+	 * value, adding character 5's value, and then adding character 4's value
+	 * shifted left by 10 bits
+	 */
+	private static final int CHARACTERS_4_AND_5_SURROGATE_INT_VALUE = SURROGATE_START
+			+ CHARACTER_5_SHORT_INT_VALUE + (CHARACTER_4_SHORT_INT_VALUE << 10);
 
 	/**
 	 * The nonsense Unicode string "Aß東А" composed of all of the characters
@@ -66,6 +84,7 @@ public class UnicodeTest {
 
 	@Test
 	public void string() throws UnsupportedEncodingException {
+		// Use the canned text to do our tests
 		String s = CANNED_TEXT;
 
 		/**
@@ -148,18 +167,57 @@ public class UnicodeTest {
 
 	@Test
 	public void text() {
+		// Use the canned text to do our tests
 		Text t = new Text(CANNED_TEXT);
 
+		/**
+		 * The Text object's getLength method indicates that the text is 10
+		 * bytes long
+		 */
 		assertThat(t.getLength(), is(10));
 
-		assertThat(t.find("\u0041"), is(0));
-		assertThat(t.find("\u00DF"), is(1));
-		assertThat(t.find("\u6771"), is(3));
-		assertThat(t.find("\uD801\uDC00"), is(6));
+		/**
+		 * The first character is at index 0
+		 */
+		assertThat(t.find(CHARACTER_1.toString()), is(0));
 
-		assertThat(t.charAt(0), is(0x0041));
-		assertThat(t.charAt(1), is(0x00DF));
-		assertThat(t.charAt(3), is(0x6771));
-		assertThat(t.charAt(6), is(0x10400));
+		/**
+		 * The second character is at index 1
+		 */
+		assertThat(t.find(CHARACTER_2.toString()), is(1));
+
+		/**
+		 * The third character is at index 3, not index 2. We are looking at
+		 * byte indexes here.
+		 */
+		assertThat(t.find(CHARACTER_3.toString()), is(3));
+
+		/**
+		 * The surrogate pair of characters 4 and 5 is at index 6, not index 4.
+		 * We are looking at byte indexes here.
+		 */
+		assertThat(t.find(CHARACTERS_4_AND_5), is(6));
+
+		/**
+		 * The first character is at index 0
+		 */
+		assertThat(t.charAt(0), is(CHARACTER_1_INT_VALUE));
+
+		/**
+		 * The second character is at index 1
+		 */
+		assertThat(t.charAt(1), is(CHARACTER_2_INT_VALUE));
+
+		/**
+		 * The third character is at index 3, not index 2. We are looking at
+		 * byte indexes here.
+		 */
+		assertThat(t.charAt(3), is(CHARACTER_3_INT_VALUE));
+
+		/**
+		 * The surrogate pair of characters 4 and 5 is at index 6, not index 4.
+		 * We are looking at byte indexes here.
+		 */
+		assertThat(t.charAt(6), is(CHARACTERS_4_AND_5_SURROGATE_INT_VALUE));
 	}
 }
