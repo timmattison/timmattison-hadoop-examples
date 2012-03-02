@@ -48,27 +48,13 @@ public class UnicodeTest {
 
 	/**
 	 * The surrogate pair of characters 4 and 5 converted into their integer
-	 * representation. The formula for this can be found here:
-	 * http://unicode.org/faq/utf_bom.html#utf16-4
+	 * representation. This information was gathered from the "UTF-16 decoder" chart found here: http://en.wikipedia.org/wiki/UTF-16#Code_points_U.2B10000_to_U.2B10FFFF
 	 */
-	private static final int HI_SURROGATE_START = 0xD800;
-	private static final int LO_SURROGATE_START = 0xDC00;
-	private static final int SURROGATE_START = 0x10000;
-	private static final int LEAD_OFFSET = HI_SURROGATE_START
-			- (SURROGATE_START >> 10);
-	private static final int SURROGATE_OFFSET = SURROGATE_START
-			- (HI_SURROGATE_START << 10) - LO_SURROGATE_START;
-
-	private static final int CHARACTER_4_RAW_CODE_POINT = CHARACTER_4_INT_VALUE & 0xFF;
-	private static final int CHARACTER_5_RAW_CODE_POINT = CHARACTER_5_INT_VALUE & 0xFF;
-	private static final int CHARACTERS_4_AND_5_RAW_CODE_POINT = ((CHARACTER_4_RAW_CODE_POINT << 8) & 0xFF00) | (CHARACTER_5_RAW_CODE_POINT & 0xFF);
+	private static final int CHARACTER_4_SHORT_INT_VALUE = CHARACTER_4_INT_VALUE & 0xFF;
+	private static final int CHARACTER_5_SHORT_INT_VALUE = CHARACTER_5_INT_VALUE & 0xFF;
 	
-	private static final int CHARACTERS_4_AND_5_LEAD_VALUE = LEAD_OFFSET
-			+ CHARACTER_4_INT_VALUE;
-	private static final int CHARACTERS_4_AND_5_TRAILING_VALUE = LO_SURROGATE_START
-			+ CHARACTER_5_INT_VALUE;
-	private static final int CHARACTERS_4_AND_5_INT_VALUE = (CHARACTERS_4_AND_5_LEAD_VALUE << 10)
-			+ CHARACTERS_4_AND_5_TRAILING_VALUE + SURROGATE_OFFSET;
+	private static final int SURROGATE_START = 0x10000;
+	private static final int CHARACTERS_4_AND_5_SURROGATE_INT_VALUE = SURROGATE_START + (CHARACTER_4_SHORT_INT_VALUE << 10) + CHARACTER_5_SHORT_INT_VALUE;
 
 	/**
 	 * The nonsense Unicode string "Aß東А" composed of all of the characters
@@ -157,7 +143,7 @@ public class UnicodeTest {
 		/**
 		 * The surrogate pair of characters 4 and 5 is at code point 3
 		 */
-		assertThat(s.codePointAt(3), is(CHARACTERS_4_AND_5_INT_VALUE));
+		assertThat(s.codePointAt(3), is(CHARACTERS_4_AND_5_SURROGATE_INT_VALUE));
 	}
 
 	@Test
