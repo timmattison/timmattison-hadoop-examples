@@ -1,3 +1,4 @@
+package com.timmattison.hadoop.examples.extra.unicode;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
